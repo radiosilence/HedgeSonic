@@ -1,16 +1,25 @@
 import { flow, Instance, types as t } from 'mobx-state-tree';
 import { Dictionary, prop, sortBy } from 'ramda';
+import { FastImageSource } from 'react-native-fast-image';
 import subsonic, { Method } from '../../services/subsonic';
 import { Album } from './album';
 import { extractMapFromIndex } from './utils';
 
-export const Artist = t.model('Artist', {
-  id: t.identifier,
-  name: t.string,
-  artistImageUrl: t.maybe(t.string),
-  albumCount: t.maybe(t.number),
-  album: t.maybe(t.array(t.reference(t.late(() => Album)))),
-});
+export const Artist = t
+  .model('Artist', {
+    id: t.identifier,
+    name: t.string,
+    artistImageUrl: t.maybe(t.string),
+    albumCount: t.maybe(t.number),
+    album: t.maybe(t.array(t.reference(t.late(() => Album)))),
+  })
+  .views(self => ({
+    get imageSource(): FastImageSource {
+      return {
+        uri: self.artistImageUrl,
+      };
+    },
+  }));
 
 export type Artist = Instance<typeof Artist>;
 
@@ -24,6 +33,9 @@ export const ArtistStore = t
       sortBy(prop('name'), Array.from(self.data.values()));
 
     return {
+      get(artistId: string) {
+        return self.data.get(artistId);
+      },
       get sorted() {
         return getSorted();
       },

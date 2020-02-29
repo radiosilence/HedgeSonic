@@ -1,17 +1,18 @@
 import { observer, Provider } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
 import React, { useEffect } from 'react';
 import {
+  ActivityIndicator,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
 } from 'react-native';
+import { ListRow, Text, ArtistRow, ArtistList } from './components';
 import { useRootStore } from './hooks/useRootStore';
 import { rootStore, SubsonicServer } from './models';
-import { getSnapshot } from 'mobx-state-tree';
+import colors from './theme/colors';
 
 type Credentials = {
   url: string;
@@ -23,10 +24,18 @@ type Credentials = {
 const credentials: Credentials = require('./credentials.json');
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.background,
+    color: colors.foreground,
+    flex: 1,
+  },
   button: {
     width: 40,
     height: 40,
     backgroundColor: 'black',
+  },
+  scrollView: {
+    flex: 1,
   },
 });
 
@@ -42,9 +51,6 @@ const Inner = observer(() => {
     (async () => {
       if (server) {
         server.activate();
-        const { artists } = server;
-        await server.getMusicFolders();
-        await artists.fetchAll();
       }
     })();
   }, [server]);
@@ -55,15 +61,10 @@ const Inner = observer(() => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <Text>{server?.url}</Text>
-        <TouchableOpacity style={styles.button} onPress={server.ping} />
-        <ScrollView>
-          {artists.loading && <ActivityIndicator />}
-          {artists.sorted.map(artist => (
-            <Text key={artist.id}>{artist.name}</Text>
-          ))}
-        </ScrollView>
+        <TouchableOpacity style={styles.button} onPress={artists.fetchAll} />
+        <ArtistList style={styles.scrollView} />
       </SafeAreaView>
     </>
   );
