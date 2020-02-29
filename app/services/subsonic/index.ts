@@ -1,6 +1,6 @@
 import md5 from 'md5';
-import { v4 } from 'uuid';
 import { stringify } from 'qs';
+import { reduce } from 'ramda';
 
 export * from './methods';
 
@@ -12,8 +12,16 @@ type Config = {
 
 let _config: Config | null = null;
 
+const chars = 'abcdefgkijklmnopqrstuvqxyzABCDEFGKIJKLMNOPQRSTUVQXYZ01234567890';
+const salt = (length = 40) =>
+  reduce(
+    (acc: string) => `${acc}${chars[Math.floor(Math.random() * chars.length)]}`,
+    'salt',
+    Array(length),
+  );
+
 const getToken = (config: Config) => {
-  const s = v4();
+  const s = salt();
   return { t: md5(`${config.password}${s}`), s };
 };
 

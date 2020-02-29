@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "axios": "^0.19.2",
     "md5": "^2.2.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
@@ -18,8 +17,7 @@
     "qs": "^6.9.1",
     "ramda": "^0.27.0",
     "react": "16.9.0",
-    "react-native": "0.61.5",
-    "uuid": "^7.0.1"
+    "react-native": "0.61.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
