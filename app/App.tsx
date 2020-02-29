@@ -18,6 +18,8 @@ type Credentials = {
   username: string;
   password: string;
 };
+
+// TODO: configuration will be stored securely on device and app will require biometrics/passcode
 const credentials: Credentials = require('./credentials.json');
 
 const styles = StyleSheet.create({
