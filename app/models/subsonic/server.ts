@@ -55,30 +55,6 @@ export const SubsonicServer = t
       console.log('<< music directory data', data);
     });
 
-    const getArtists = flow(function*() {
-      self.loading = true;
-      try {
-        const data = yield request(Method.GetArtists);
-        console.log('<< artists', data.artists);
-        console.log(
-          'extracted',
-          extractMapFromIndex('artist', data.artists.index),
-        );
-        self.artists.setArtists(
-          extractMapFromIndex('artist', data.artists.index),
-        );
-      } catch (err) {
-        console.error(err);
-      } finally {
-        self.loading = false;
-      }
-    });
-
-    const getArtist = flow(function*(p: { id: string }) {
-      const data = yield request(Method.GetArtist, p);
-      console.log('<< artist', p, data);
-    });
-
     return {
       ping,
       request,
@@ -87,8 +63,6 @@ export const SubsonicServer = t
       setCredentials,
       getMusicFolders,
       getIndexes,
-      getArtist,
-      getArtists,
       getMusicDirectory,
     };
   });

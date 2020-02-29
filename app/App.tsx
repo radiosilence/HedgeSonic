@@ -39,15 +39,16 @@ const Inner = observer(() => {
     (async () => {
       if (server) {
         server.activate();
+        const { artists } = server;
         await server.getMusicFolders();
-        await server.getArtists();
-        await server.getArtist({ id: '3388' });
+        await artists.fetchAll();
       }
     })();
   }, [server]);
   console.log('server', server);
   if (!server) return null;
-  console.log('artists', getSnapshot(server.artists));
+  const { artists } = server;
+  console.log('artists', getSnapshot(artists));
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -55,8 +56,8 @@ const Inner = observer(() => {
         <Text>{server?.url}</Text>
         <TouchableOpacity style={styles.button} onPress={server.ping} />
         <ScrollView>
-          {server.loading && <ActivityIndicator />}
-          {server.artists.sorted.map(artist => (
+          {artists.loading && <ActivityIndicator />}
+          {artists.sorted.map(artist => (
             <Text key={artist.id}>{artist.name}</Text>
           ))}
         </ScrollView>
