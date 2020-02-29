@@ -1,5 +1,5 @@
 import { types as t, flow, Instance } from 'mobx-state-tree';
-import uuid from 'uuid';
+import { v4 } from 'uuid';
 import md5 from 'md5';
 import { stringify } from 'qs';
 import { Url } from './api';
@@ -12,13 +12,14 @@ export const SubsonicServer = t
   })
   .views(self => {
     const getToken = () => {
-      const s = uuid.v4();
+      const s = v4();
       return { t: md5(`${self.password}${s}`), s };
     };
     return {
       params(extra = {}) {
         return stringify({
           ...getToken(),
+          // u: self.username,
           f: 'json',
           c: 'HedgeSonic',
           v: '1.16.1',
@@ -28,13 +29,14 @@ export const SubsonicServer = t
     };
   })
   .actions(self => {
-    const request = flow(function*(path: string) {
+    const request = flow(function*(path: string, params = {}) {
       try {
-        const response = yield fetch(
-          `${self.url}/rest${path}?${self.params()}`,
-        );
+        const uri = `${self.url}/rest${path}?${self.params(params)}`;
+        console.log('requesting URI', uri);
+        const response = yield fetch(uri);
         console.log('got a response', response);
-        return response;
+        const json = yield response.json();
+        return json['subsonic-response'];
       } catch (err) {
         console.error(err);
       }
@@ -49,7 +51,8 @@ export const SubsonicServer = t
       self.password = password;
     };
     const ping = flow(function*() {
-      request(Url.Ping);
+      const data = yield request(Url.Ping);
+      console.log('ping data', data);
     });
 
     return {
