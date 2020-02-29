@@ -6,3 +6,9 @@ Hobby project Subsonic media client written using:
 - Mobx State Tree
 - TypeScript
 - As little other dependencies as possible
+
+Planned features include:
+
+- Album art
+- Offline tracks
+- Cross platform

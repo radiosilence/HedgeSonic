@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 const Inner = observer(() => {
   const { subsonicStore } = useRootStore();
   const server = subsonicStore.servers.get('blit');
+
   useEffect(() => {
     subsonicStore.setServer('blit', SubsonicServer.create(credentials));
   }, []);
