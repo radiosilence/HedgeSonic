@@ -47,6 +47,7 @@
     "prettier": "2.0.4",
     "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "16.13.1",
+    "rnpm-plugin-dom": "^0.5.0",
     "ts-jest": "^25.3.1",
     "typescript": "^3.8.3"
   },
