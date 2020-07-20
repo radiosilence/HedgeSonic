@@ -21,7 +21,7 @@
     "react-native-fast-image": "8.1.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.10.5",
     "@babel/runtime": "^7.9.2",
     "@react-native-community/eslint-config": "^1.0.0",
     "@types/jest": "^25.2.1",
