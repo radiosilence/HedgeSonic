@@ -17,7 +17,7 @@
     "qs": "6.9.4",
     "ramda": "^0.27.1",
     "react": "16.13.1",
-    "react-native": "0.63.3",
+    "react-native": "0.64.1",
     "react-native-fast-image": "8.3.2"
   },
   "devDependencies": {
